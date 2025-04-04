@@ -23,5 +23,24 @@ module Wsock
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    websocket_url = ENV['WEB_SOCKET_URL'] || 'ws://localhost:8080'
+
+    # Set Content-Security-Policy headers
+    config.action_dispatch.default_headers.merge!(
+      'Content-Security-Policy' => "default-src 'self'; connect-src 'self' #{websocket_url};"
+    )
+
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins '*'
+        resource '*',
+          headers: :any,
+          methods: [:get, :post, :options],
+          expose: ['Content-Security-Policy'],
+          credentials: false
+      end
+    end  
   end
+  
 end

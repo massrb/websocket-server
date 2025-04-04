@@ -23,3 +23,12 @@
 #   # Report violations without enforcing the policy.
 #   # config.content_security_policy_report_only = true
 # end
+
+Rails.application.config.content_security_policy_report_only = true
+
+Rails.application.config.content_security_policy do |policy|
+  websocket_url = ENV['WEB_SOCKET_URL'] || 'ws://localhost:3000'  # Default to localhost
+  http_url = ENV['HTTP_SERVER_URL'] || 'http://localhost:3000'    # Default to localhost
+
+  policy.connect_src :self, websocket_url, http_url
+end
