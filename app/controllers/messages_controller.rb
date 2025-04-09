@@ -24,7 +24,7 @@ class MessagesController < ApplicationController
     puts 'broadcast to channel from controller'
     @message = Message.create(message_params)
     ActionCable.server.broadcast("ChatChannel", @message)
-    head :ok
+    redirect_to messages_path
   end
 
   # PATCH/PUT /messages/1 or /messages/1.json
