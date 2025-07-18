@@ -48,7 +48,11 @@ RUN groupadd --system --gid 1000 rails && \
     useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
     chown -R rails:rails db log storage tmp
 
+COPY docker-entrypoint.sh ./docker-entrypoint.sh
+RUN chmod +x ./docker-entrypoint.sh
+RUN chown rails:rails ./docker-entrypoint.sh
+
 USER rails
 
-# Default command
-CMD ["sh", "-c", "bin/rails db:migrate || echo 'Migration failed, continuing...' && bin/rails server -b 0.0.0.0"]
+ENTRYPOINT ["./docker-entrypoint.sh"]
+CMD ["rails", "server", "-b", "0.0.0.0"]
