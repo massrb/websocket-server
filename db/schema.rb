@@ -18,6 +18,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_18_194107) do
     t.string "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["id"], name: "index_messages_on_id", unique: true
   end
 end
