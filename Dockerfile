@@ -51,4 +51,4 @@ RUN groupadd --system --gid 1000 rails && \
 USER rails
 
 # Default command
-CMD ["bin/rails", "server"]
+CMD ["sh", "-c", "bin/rails db:migrate && bin/rails server"]
