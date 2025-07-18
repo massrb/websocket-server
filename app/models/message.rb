@@ -4,6 +4,10 @@ class Message < ApplicationRecord
   private
 
   def broadcast_message_and_trim_old
+    Rails.logger.debug "Debug: entering broadcast_message_and_trim_old"
+    Rails.logger.debug "Debug: message = #{self.inspect}"
+    Rails.logger.debug "Debug: message id = #{self.id}"
+
     broadcast_append_to "messages", target: "messages", partial: "messages/message"
 
     total = Message.count
