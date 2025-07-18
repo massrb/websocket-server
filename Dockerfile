@@ -51,4 +51,4 @@ RUN groupadd --system --gid 1000 rails && \
 USER rails
 
 # Default command
-CMD ["sh", "-c", "bin/rails db:migrate && bin/rails server"]
+CMD ["sh", "-c", "bin/rails db:migrate || echo 'Migration failed, continuing...' && bin/rails server -b 0.0.0.0"]
