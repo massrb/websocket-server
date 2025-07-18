@@ -11,6 +11,10 @@ class Message < ApplicationRecord
     ActiveRecord::Base.connection.indexes(:messages).each do |index|
       Rails.logger.debug "Index: #{index.name}, Columns: #{index.columns}, Unique: #{index.unique}"
     end
+    Message.connection.indexes("messages").each do |index|
+      puts "message conenctions; Name: #{index.name}, Unique: #{index.unique}, Columns: #{index.columns.inspect}"
+    end
+
     Rails.logger.debug "=== INDEX DEBUG END ==="
 
     broadcast_append_to "messages", target: "messages", 
