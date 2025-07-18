@@ -15,6 +15,9 @@ class Message < ApplicationRecord
       puts "message conenctions; Name: #{index.name}, Unique: #{index.unique}, Columns: #{index.columns.inspect}"
     end
 
+    primary_key = Message.connection.primary_key('messages')
+    Rails.logger.debug "Primary key for messages table: #{primary_key.inspect}"
+    
     Rails.logger.debug "=== INDEX DEBUG END ==="
 
     broadcast_append_to "messages", target: "messages", 
