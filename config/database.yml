@@ -16,22 +16,9 @@ test:
   <<: *default
   database: test_wsock
 
-
 # Store production database in the storage/ directory, which by default
 # is mounted as a persistent Docker volume in config/deploy.yml.
 production:
-  primary:
-    <<: *default
-    database: prod_wsock
-  cache:
-    <<: *default
-    database: prod_cache_wsock
-    migrations_paths: db/cache_migrate
-  queue:
-    <<: *default
-    database: prod_queue_wsock
-    migrations_paths: db/queue_migrate
-  cable:
-    <<: *default
-    database: prod_cable_wsock
-    migrations_paths: db/cable_migrate
+  <<: *default
+  database: prod_wsock
+  url: <%= ENV["DATABASE_URL"] %>
