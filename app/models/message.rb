@@ -8,7 +8,10 @@ class Message < ApplicationRecord
     Rails.logger.debug "Debug: message = #{self.inspect}"
     Rails.logger.debug "Debug: message id = #{self.id}"
 
-    broadcast_append_to "messages", target: "messages", partial: "messages/message"
+    broadcast_append_to "messages", target: "messages", 
+                        partial: "messages/message", 
+                        locals: { message: self }, unique_by: :id
+
 
     total = Message.count
     if total > 200
