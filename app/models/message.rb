@@ -24,7 +24,7 @@ class Message < ApplicationRecord
 
     broadcast_append_to "messages", target: "messages", 
                         partial: "messages/message", 
-                        locals: { message: self }, unique_by: ->(message) { message.id }
+                        locals: { message: self }, unique_by: ->(message) { [message.id] }
 
 
     total = Message.count
