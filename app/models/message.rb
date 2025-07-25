@@ -1,6 +1,10 @@
 class Message < ApplicationRecord
   after_create_commit :broadcast_message_and_trim_old
 
+  def turbo_stream_name
+    "message_#{id || SecureRandom.hex(4)}"
+  end
+
   private
 
   def broadcast_message_and_trim_old
@@ -24,7 +28,7 @@ class Message < ApplicationRecord
 
     broadcast_append_to "messages", target: "messages", 
                         partial: "messages/message", 
-                        locals: { message: self }, unique_by: :id
+                        locals: { message: self } # , unique_by: :id
 
     total = Message.count
     if total > 200
