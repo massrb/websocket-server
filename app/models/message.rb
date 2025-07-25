@@ -32,16 +32,31 @@ class Message < ApplicationRecord
 
     Rails.logger.debug "=== INDEX DEBUG END ==="
 
+    rendered_message = ApplicationController.render(
+      partial: "messages/message",
+      locals: { message: self }
+    )
+
+    ActionCable.server.broadcast(
+      "messages",
+      {
+        turbo_stream: {
+          action: "append",
+          target: "messages",
+          template: rendered_message
+        }
+      }
+    )
     # broadcast_append_to "messages", target: "messages", 
     #                    partial: "messages/message", 
     #                    locals: { message: self } # , unique_by: :id
 
-    Turbo::StreamsChannel.broadcast_append_to(
-      "messages",
-      target: "messages",
-      partial: "messages/message",
-      locals: { message: self }
-    )                    
+    # Turbo::StreamsChannel.broadcast_append_to(
+    #   "messages",
+    #  target: "messages",
+    #  partial: "messages/message",
+    #  locals: { message: self }
+    # )                    
 
     total = Message.count
     if total > 200
