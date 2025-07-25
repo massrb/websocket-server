@@ -1,10 +1,16 @@
 class Message < ApplicationRecord
+  self.broadcasts = false
   after_create_commit :broadcast_message_and_trim_old
 
   def turbo_stream_name
     "message_#{id || SecureRandom.hex(4)}"
   end
 
+  def broadcast_append_to(...)
+    Rails.logger.error "❌ broadcast_append_to was called — NOT from your custom code!"
+    raise "broadcast_append_to call blocked"
+  end
+  
   private
 
   def broadcast_message_and_trim_old
