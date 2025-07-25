@@ -22,9 +22,13 @@ class MessagesController < ApplicationController
   # POST /messages or /messages.json
   def create
     puts 'broadcast to channel from controller'
-    @message = Message.create(message_params)
-    ActionCable.server.broadcast("ChatChannel", @message)
-    redirect_to messages_path
+    @message = Message.new(message_params)
+    if @message.save
+      ActionCable.server.broadcast("ChatChannel", @message)
+      redirect_to messages_path, notice: "Message sent!"
+    else
+      render :new
+    end
   end
 
   # PATCH/PUT /messages/1 or /messages/1.json
@@ -52,12 +56,13 @@ class MessagesController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    
     def set_message
-      @message = Message.find(params.expect(:id))
+      @message = Message.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def message_params
-      params.expect(message: [ :content ])
+      params.require(:message).permit(:content)
     end
 end
