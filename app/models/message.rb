@@ -1,4 +1,6 @@
 class Message < ApplicationRecord
+  include Turbo::Broadcastable # only if not included implicitly
+  self.broadcasts = false
   # self.broadcasts = false
   # broadcasts_to 'messages' # disables auto-broadcast
   # self.broadcasts = false
