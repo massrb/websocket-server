@@ -23,10 +23,16 @@ class MessagesController < ApplicationController
   def create
     puts 'broadcast to channel from controller'
     @message = Message.new(message_params)
+    puts "message params:#{message_params}"
     if @message.save
-      ActionCable.server.broadcast("ChatChannel", @message)
+      puts "DEBUG: message saved: #{@message.inspect}"
+      puts "DEBUG: broadcasting to ChatChannel"
+    
+      ActionCable.server.broadcast("ChatChannel", @message)  # LINE 26
+
       redirect_to messages_path, notice: "Message sent!"
     else
+      puts "DEBUG: message save failed: #{@message.errors.full_messages}"
       render :new
     end
   end
