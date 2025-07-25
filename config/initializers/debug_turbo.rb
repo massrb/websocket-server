@@ -5,3 +5,7 @@ module Turbo
     end
   end
 end
+
+Turbo::Broadcasts.configure do |config|
+  config.unique_index_required = false
+end if defined?(Turbo::Broadcasts)
