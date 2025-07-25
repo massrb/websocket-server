@@ -1,6 +1,6 @@
 class Message < ApplicationRecord
   # self.broadcasts = false
-  self.broadcasts_to -> { nil } # disables auto-broadcast
+  self.broadcasts_to nil # disables auto-broadcast
   after_create_commit :broadcast_message_and_trim_old
 
   def turbo_stream_name
