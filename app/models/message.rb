@@ -37,16 +37,19 @@ class Message < ApplicationRecord
       locals: { message: self }
     )
 
-    ActionCable.server.broadcast(
-      "messages",
-      {
-        turbo_stream: {
-          action: "append",
-          target: "messages",
-          template: rendered_message
-        }
-      }
-    )
+    turbo_stream_payload = <<~STREAM
+      <turbo-stream action="append" target="messages">
+        <template>
+          #{ApplicationController.render(
+            partial: "messages/message",
+            locals: { message: self }
+          )}
+        </template>
+      </turbo-stream>
+    STREAM
+
+    ActionCable.server.broadcast("messages", turbo_stream_payload)
+    
     # broadcast_append_to "messages", target: "messages", 
     #                    partial: "messages/message", 
     #                    locals: { message: self } # , unique_by: :id
