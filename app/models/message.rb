@@ -1,5 +1,5 @@
 class Message < ApplicationRecord
-  self.broadcasts = false
+  # self.broadcasts = false
   after_create_commit :broadcast_message_and_trim_old
 
   def turbo_stream_name
@@ -10,7 +10,7 @@ class Message < ApplicationRecord
     Rails.logger.error "❌ broadcast_append_to was called — NOT from your custom code!"
     raise "broadcast_append_to call blocked"
   end
-  
+
   private
 
   def broadcast_message_and_trim_old
