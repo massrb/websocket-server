@@ -12,10 +12,12 @@ class Message < ApplicationRecord
     "messages"
   end
 
+=begin
   def broadcast_append_to(*args)
     Rails.logger.error "❌ broadcast_append_to was called — NOT from your custom code!"
     raise "broadcast_append_to call blocked"
   end
+=end
 
   private
 
