@@ -7,7 +7,7 @@
 <%= turbo_stream_from "messages" %>
 
 <div id="messages" class="h-96 overflow-auto">
-  <%= render Message.last(10) %>
+  <%= render partial: "message", collection: Message.last(10), as: :message %>
 </div>
 
 <%= form_with model: Message.new do |f| %>
