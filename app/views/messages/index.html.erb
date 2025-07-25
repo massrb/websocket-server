@@ -4,8 +4,6 @@
 
 <h1>Messages</h1>
 
-<%= turbo_stream_from "messages" %>
-
 <div id="messages" class="h-96 overflow-auto">
   <%= render partial: "message", collection: Message.last(10), as: :message %>
 </div>
