@@ -4,17 +4,13 @@
 
 <h1>Messages</h1>
 
-<%= tag.div do %>
-  <%= tag.turbo_stream_from "messages" %>
+<%= turbo_stream_from "messages" %>
 
-  <div id="messages" class="h-96 overflow-auto">
-    <%= render Message.last(10) %>
-  </div>
+<div id="messages" class="h-96 overflow-auto">
+  <%= render Message.last(10) %>
+</div>
 
-
-  <%= form_with model: Message.new do |f| %>
-    <%= f.text_field :content, placeholder: "message..." %>
-    <%= f.submit "send", class: "p-2 font-bold" %>
-  <% end %>
+<%= form_with model: Message.new do |f| %>
+  <%= f.text_field :content, placeholder: "message..." %>
+  <%= f.submit "send", class: "p-2 font-bold" %>
 <% end %>
-
