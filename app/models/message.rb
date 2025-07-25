@@ -44,7 +44,7 @@ class Message < ApplicationRecord
       partial: "messages/message",
       locals: { message: self }
     )
-
+=begin
     turbo_stream_payload = <<~STREAM
       <turbo-stream action="append" target="messages">
         <template>
@@ -57,6 +57,13 @@ class Message < ApplicationRecord
     STREAM
 
     ActionCable.server.broadcast("messages", turbo_stream_payload)
+=end
+    html = ApplicationController.render(
+      partial: "messages/message",
+      locals: { message: self }
+    )
+
+    ActionCable.server.broadcast("ChatChannel", html)
 
     # broadcast_append_to "messages", target: "messages", 
     #                    partial: "messages/message", 
