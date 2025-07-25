@@ -8,6 +8,10 @@ class Message < ApplicationRecord
     "message_#{id || SecureRandom.hex(4)}"
   end
 
+  def broadcast_stream_name
+    "messages"
+  end
+
   def broadcast_append_to(*args)
     Rails.logger.error "❌ broadcast_append_to was called — NOT from your custom code!"
     raise "broadcast_append_to call blocked"
