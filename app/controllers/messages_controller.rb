@@ -20,20 +20,26 @@ class MessagesController < ApplicationController
   end
 
   # POST /messages or /messages.json
-  def create
-    puts 'broadcast to channel from controller'
-    @message = Message.new(message_params)
-    puts "message params:#{message_params}"
-    if @message.save
-      puts "DEBUG: message saved: #{@message.inspect}"
-      puts "DEBUG: broadcasting to ChatChannel"
-    
-      ActionCable.server.broadcast("ChatChannel", @message)  # LINE 26
 
-      redirect_to messages_path, notice: "Message sent!"
+  def create
+    @message = Message.new(message_params)
+
+    if @message.save
+      html = ApplicationController.render(
+        partial: "messages/message",
+        locals: { message: @message }
+      )
+
+      total = Message.count
+      if total > 200
+        # Get oldest message IDs to delete
+        excess_ids = Message.order(id: :asc).limit(total - 200).pluck(:id)
+        Message.where(id: excess_ids).delete_all
+      end
+      ActionCable.server.broadcast("PhoneConnectChannel", { content: html })
+      # redirect_to messages_path, notice: "Message sent"
     else
-      puts "DEBUG: message save failed: #{@message.errors.full_messages}"
-      render :new
+      render :index, alert: "Message failed"
     end
   end
 

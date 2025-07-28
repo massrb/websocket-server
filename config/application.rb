@@ -27,9 +27,16 @@ module Wsock
     websocket_url = ENV['WEB_SOCKET_URL'] || 'ws://localhost:8080'
 
     # Set Content-Security-Policy headers
-    config.action_dispatch.default_headers.merge!(
-      'Content-Security-Policy' => "default-src 'self'; connect-src 'self' #{websocket_url};"
-    )
+    # config.action_dispatch.default_headers.merge!(
+    #  'Content-Security-Policy' => "default-src 'self'; connect-src 'self' #{websocket_url};"
+    # )
+
+    Rails.application.config.content_security_policy do |policy|
+      policy.default_src :self
+      policy.connect_src :self, websocket_url
+      policy.script_src :self, -> { "'nonce-#{content_security_policy_nonce}'" }
+      # add other directives you need, like style_src, img_src etc.
+    end
 
     config.middleware.insert_before 0, Rack::Cors do
       allow do

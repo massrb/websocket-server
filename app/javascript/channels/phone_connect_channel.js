@@ -11,10 +11,13 @@ consumer.subscriptions.create("PhoneConnectChannel", {
   },
 
   received(data) {
-    console.log('in js received')
+    console.log('in js received', data)
     // Called when there's incoming data on the websocket for this channel
     const messages = document.querySelector("#messages")
-    messages.insertAdjacentHTML("beforeend", `<p>${data.content}</p>`)
-    messages.lastElementChild.scrollIntoView({behavior: "smooth"})
+    if (messages) {
+      console.log('insert html', data.content)
+      messages.insertAdjacentHTML("beforeend", data.content)
+      messages.lastElementChild.scrollIntoView({behavior: "smooth"})
+    }
   }
 });
