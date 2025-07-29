@@ -28,7 +28,9 @@ class MessagesController < ApplicationController
     cable_connection = ActiveRecord::Base.connected_to(role: :writing, shard: :cable) do
       ActiveRecord::Base.connection
     end
-
+    
+    Rails.logger.debug "DEBUG - Cable DB config: #{cable_connection.pool.db_config.name}"
+    Rails.logger.debug "DEBUG - Cable DB config URL: #{cable_connection.pool.db_config.database}"
     Rails.logger.debug "DEBUG - Cable connection config: #{cable_connection.pool.spec.config.inspect}"
     begin
       @message.save!
