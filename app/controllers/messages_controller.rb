@@ -24,7 +24,9 @@ class MessagesController < ApplicationController
   def create
     @message = Message.new(message_params)
 
-    if @message.save
+    begin
+      @message.save!
+
       html = ApplicationController.render(
         partial: "messages/message",
         locals: { message: @message }
@@ -32,14 +34,16 @@ class MessagesController < ApplicationController
 
       total = Message.count
       Rails.logger.debug "DEBUG total messages: #{total}"
+
       if total > 200
         Rails.logger.debug "DEBUG clean up messages"
-        # Get oldest message IDs to delete
         Message.order(id: :asc).limit(total - 200).destroy_all
       end
+
       ActionCable.server.broadcast("PhoneConnectChannel", { content: html })
       # redirect_to messages_path, notice: "Message sent"
-    else
+    rescue ActiveRecord::RecordInvalid => e
+      Rails.logger.error "Message save failed: #{e.message}"
       render :index, alert: "Message failed"
     end
   end
