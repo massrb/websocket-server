@@ -25,10 +25,10 @@ class MessagesController < ApplicationController
     @message = Message.new(message_params)
 
     # In your app, e.g. an initializer or controller
-    cable_connection = ActiveRecord::Base.connected_to(role: :writing, shard: :cable) do
+    cable_connection = ActiveRecord::Base.connected_to(role: :writing) do
       ActiveRecord::Base.connection
     end
-    
+
     Rails.logger.debug "DEBUG - Cable DB config: #{cable_connection.pool.db_config.name}"
     Rails.logger.debug "DEBUG - Cable DB config URL: #{cable_connection.pool.db_config.database}"
     Rails.logger.debug "DEBUG - Cable connection config: #{cable_connection.pool.spec.config.inspect}"
