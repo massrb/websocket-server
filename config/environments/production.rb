@@ -86,6 +86,8 @@ Rails.application.configure do
     /https:\/\/websocket-server-gjg0\.onrender\.com/
   ]
 
+  config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present? || true
+
   # Enable DNS rebinding protection and other `Host` header attacks.
   # config.hosts = [
   #   "example.com",     # Allow requests from example.com
