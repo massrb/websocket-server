@@ -9,3 +9,4 @@ pin "@hotwired/stimulus", to: "stimulus.min.js"
 pin "@hotwired/stimulus-loading", to: "stimulus-loading.js"
 pin "@rails/actioncable", to: "actioncable.esm.js"
 pin "@rails/actioncable/src", to: "@rails--actioncable--src.js" # @8.0.200
+pin "clear_message_field", to: "clear_message_field.js"

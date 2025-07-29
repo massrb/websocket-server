@@ -24,7 +24,6 @@ COPY . .
 
 # Precompile assets (optional, if you use sprockets or webpacker)
 RUN bundle exec rake assets:precompile
-# RUN RAILS_ENV=production bundle exec rails assets:precompile
 
 # ===========================
 # Runtime stage
