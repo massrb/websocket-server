@@ -81,6 +81,11 @@ Rails.application.configure do
 
   config.hosts << "websocket-server-gjg0.onrender.com"
 
+  config.action_cable.url = "wss://websocket-server-gjg0.onrender.com/cable"
+  config.action_cable.allowed_request_origins = [
+    /https:\/\/websocket-server-gjg0\.onrender\.com/
+  ]
+
   # Enable DNS rebinding protection and other `Host` header attacks.
   # config.hosts = [
   #   "example.com",     # Allow requests from example.com
