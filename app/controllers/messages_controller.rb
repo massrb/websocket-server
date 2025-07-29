@@ -24,6 +24,12 @@ class MessagesController < ApplicationController
   def create
     @message = Message.new(message_params)
 
+    # In your app, e.g. an initializer or controller
+    cable_connection = ActiveRecord::Base.connected_to(role: :writing, shard: :cable) do
+      ActiveRecord::Base.connection
+    end
+
+    Rails.logger.debug "DEBUG - Cable connection config: #{cable_connection.pool.spec.config.inspect}"
     begin
       @message.save!
 
