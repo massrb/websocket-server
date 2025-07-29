@@ -31,7 +31,7 @@ class MessagesController < ApplicationController
 
     Rails.logger.debug "DEBUG - Cable DB config: #{cable_connection.pool.db_config.name}"
     Rails.logger.debug "DEBUG - Cable DB config URL: #{cable_connection.pool.db_config.database}"
-    Rails.logger.debug "DEBUG - Cable connection config: #{cable_connection.pool.spec.config.inspect}"
+    # Rails.logger.debug "DEBUG - Cable connection config: #{cable_connection.pool.spec.config.inspect}"
     begin
       @message.save!
 
