@@ -31,10 +31,11 @@ class MessagesController < ApplicationController
       )
 
       total = Message.count
+      Rails.logger.debug "DEBUG total messages: #{total}"
       if total > 200
+        Rails.logger.debug "DEBUG clean up messages"
         # Get oldest message IDs to delete
-        excess_ids = Message.order(id: :asc).limit(total - 200).pluck(:id)
-        Message.where(id: excess_ids).delete_all
+        Message.order(id: :asc).limit(total - 200).destroy_all
       end
       ActionCable.server.broadcast("PhoneConnectChannel", { content: html })
       # redirect_to messages_path, notice: "Message sent"
