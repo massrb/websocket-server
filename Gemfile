@@ -65,3 +65,4 @@ group :test do
 end
 
 gem 'rack-cors'
+gem 'redis', '~> 4.0'
