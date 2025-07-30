@@ -24,35 +24,9 @@ class MessagesController < ApplicationController
   def create
     @message = Message.new(message_params)
 
-    # In your app, e.g. an initializer or controller
-    cable_connection = ActiveRecord::Base.connected_to(role: :writing) do
-      ActiveRecord::Base.connection
-    end
-
-    Rails.logger.debug "DEBUG - Cable DB config: #{cable_connection.pool.db_config.name}"
-    Rails.logger.debug "DEBUG - Cable DB config URL: #{cable_connection.pool.db_config.database}"
-    # Rails.logger.debug "DEBUG - Cable connection config: #{cable_connection.pool.spec.config.inspect}"
-    begin
-      @message.save!
-
-      html = ApplicationController.render(
-        partial: "messages/message",
-        locals: { message: @message }
-      )
-
-      total = Message.count
-      Rails.logger.debug "DEBUG total messages: #{total}"
-
-      if total > 200
-        Rails.logger.debug "DEBUG clean up messages"
-        Message.order(id: :asc).limit(total - 200).destroy_all
-      end
-
-      ActionCable.server.broadcast("PhoneConnectChannel", { content: html })
-      # redirect_to messages_path, notice: "Message sent"
-    rescue ActiveRecord::RecordInvalid => e
-      Rails.logger.error "Message save failed: #{e.message}"
-      render :index, alert: "Message failed"
+    unless @message.save
+      Rails.logger.error "Message save failed: #{@message.errors.full_messages.join(", ")}"
+      render json: { errors: @message.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
