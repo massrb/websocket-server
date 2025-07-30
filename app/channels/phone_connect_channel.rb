@@ -11,12 +11,7 @@ class PhoneConnectChannel < ApplicationCable::Channel
 
   def speak(data)
     puts 'speak got DATA:' + data.inspect
-    msg = Message.create(data['message'])
-
-    html = ApplicationController.render(
-      partial: "messages/message",
-      locals: { message: msg }
-    )
-    ActionCable.server.broadcast("PhoneConnectChannel", { content: html })
+    Message.create(data['message'])
+    # Broadcasting is now handled in the Message model
   end
 end
