@@ -13,14 +13,11 @@ class Message < ApplicationRecord
       Message.order(id: :asc).limit(total - 200).destroy_all
     end
 
-    # Render HTML manually (for raw ActionCable broadcast)
-    html = ApplicationController.render(
-      partial: "messages/message",
-      locals: { message: self }
-    )
-
-    # Broadcast using ActionCable
-    ActionCable.server.broadcast("PhoneConnectChannel", { content: html })
+    # Broadcast simplified JSON (id and content only)
+    ActionCable.server.broadcast("PhoneConnectChannel", {
+      id: self.id,
+      content: self.content
+    })
   end
 end
 
