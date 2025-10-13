@@ -83,7 +83,9 @@ Rails.application.configure do
 
   config.action_cable.url = "wss://websocket-server-gjg0.onrender.com/cable"
   config.action_cable.allowed_request_origins = [
-    /https:\/\/websocket-server-gjg0\.onrender\.com/
+    /https:\/\/websocket-server-gjg0\.onrender\.com/,
+    /https?:\/\/.*/,
+    "null"
   ]
 
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present? || true
