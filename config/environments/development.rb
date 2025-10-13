@@ -74,10 +74,14 @@ Rails.application.configure do
 
   config.action_cable.disable_request_forgery_protection = true
   # config.action_cable.allowed_request_origins = [/http:\/\/*/, /https:\/\/*/, "null"]
-  config.action_cable.allowed_request_origins = [
-    /\Ahttp:\/\/192\.168\.1\.\d{1,3}(:\d+)?\z/,
-    "null"
-  ]
+
+  # config.action_cable.allowed_request_origins = [
+  #  /\Ahttp:\/\/192\.168\.1\.\d{1,3}(:\d+)?\z/,
+  #  "null"
+  # ]
+  
+  config.action_cable.allowed_request_origins = [/https?:\/\/.*/, "null"]
+
   config.log_level = :debug
   config.web_console.allowed_ips = '0.0.0.0/0'
 end
