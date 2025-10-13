@@ -11,7 +11,7 @@ class PhoneConnectChannel < ApplicationCable::Channel
 
   def speak(data)
     puts 'speak got DATA:' + data.inspect
-    Message.create(data['message'])
+    Message.create(content: data['message'])
     # Broadcasting is now handled in the Message model
   end
 end
