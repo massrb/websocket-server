@@ -1,6 +1,6 @@
 class PhoneConnectChannel < ApplicationCable::Channel
   def subscribed
-    puts "SUBSCRIBED to phone channel: \n\n" + params.inspect
+    puts "📞 [#{connection.uuid}] SUBSCRIBED to PhoneConnectChannel with params: #{params.inspect}\n\n"
     # stream_from "chat_#{params[:room]}"
     stream_from "PhoneConnectChannel"
   end
@@ -10,7 +10,7 @@ class PhoneConnectChannel < ApplicationCable::Channel
   end
 
   def speak(data)
-    puts 'speak got DATA:' + data.inspect
+    puts "💬 [#{connection.uuid}] speak got DATA: #{data.inspect}"
     Message.create(content: data['message'])
     # Broadcasting is now handled in the Message model
   end
