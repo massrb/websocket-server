@@ -33,16 +33,20 @@ consumer.subscriptions.create("PhoneConnectChannel", {
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("chat-form")
-  const input = document.getElementById("chat-input")
-
   if (!form) return
 
+  const input = document.getElementById("chat-input")
+  if (!input) return
+
   form.addEventListener("submit", (e) => {
-    e.preventDefault()
+    // Only use WebSocket on pages where data-ws="true"
+    if (form.dataset.ws === "true") {
+      e.preventDefault()                  // stop normal POST
+      const message = input.value.trim()
+      if (!message) return
 
-    if (input.value.trim() === "") return
-
-    channel.speak(input.value)
-    input.value = ""
+      phoneConnectChannel.speak(message)  // <-- sends to server via WebSocket
+      input.value = ""
+    }
   })
 })
