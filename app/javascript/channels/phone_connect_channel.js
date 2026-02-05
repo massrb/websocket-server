@@ -25,4 +25,24 @@ consumer.subscriptions.create("PhoneConnectChannel", {
     messages.insertAdjacentHTML("beforeend", html);
     messages.lastElementChild.scrollIntoView({ behavior: "smooth" });
   }
+
+  speak(message) {
+    this.perform("speak", { message: message })
+  }
 }});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("chat-form")
+  const input = document.getElementById("chat-input")
+
+  if (!form) return
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault()
+
+    if (input.value.trim() === "") return
+
+    channel.speak(input.value)
+    input.value = ""
+  })
+})
